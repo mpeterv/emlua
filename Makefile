@@ -1,14 +1,18 @@
-all: liblua.js
+all: emlua.js
 
-liblua.a:
+emlua_bindings.c:
+	./gen_bindings.py
+
+lua/src/liblua.a:
 	make -C lua/src liblua.a CC=emcc AR="emar rcu" RANLIB=emranlib
-	mv lua/src/liblua.a liblua.a
 
-liblua.js: emlua.c liblua.a
-	emcc -O2 emlua.c liblua.a -o liblua.js -I lua/src -s RESERVED_FUNCTION_POINTERS=3
+emlua.js: emlua.c emlua_bindings.c lua/src/liblua.a emlua_prefix.js emlua_suffix.js
+	emcc -O2 emlua.c lua/src/liblua.a -o emlua.js -I lua/src \
+		-s RESERVED_FUNCTION_POINTERS=3 --memory-init-file 0 \
+		--pre-js emlua_prefix.js --post-js emlua_suffix.js
 
 clean:
 	make -C lua clean
-	$(RM) liblua.a liblua.js liblua.js.mem
+	$(RM) emlua_bindings.c emlua.js
 
 .PHONY: all clean

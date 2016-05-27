@@ -1,0 +1,2 @@
+var emlua = {};
+(function() {
