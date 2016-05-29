@@ -1,6 +1,7 @@
 # emlua
 
 Yet another port of Lua to JavaScript using [Emscripten](http://kripken.github.io/emscripten-site/).
+Demo using Lua 5.3: http://mpeterv.github.io/emlua-demo/.
 
 ## Features
 
